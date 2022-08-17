@@ -19,6 +19,13 @@
                 <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus />
             </div>
 
+            <!-- Date of birth -->
+            <div class="mt-4">
+                <x-label for="dob" :value="__('Date of birth')" />
+
+                <x-input id="dob" class="block mt-1 w-full" type="date" name="dob" :value="old('dob')" required />
+            </div>
+
             <!-- Email Address -->
             <div class="mt-4">
                 <x-label for="email" :value="__('Email')" />

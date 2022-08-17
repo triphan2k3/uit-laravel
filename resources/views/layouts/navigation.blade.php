@@ -16,12 +16,6 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                 </div>
-                
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
-                        {{ __('Show users') }}
-                    </x-nav-link>
-                </div>
             </div>
 
             <!-- Settings Dropdown -->
@@ -40,12 +34,22 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        <!-- Dropdown -->
-                        <x-dropdown-link :href="route('users.edit', Auth::user()->id)">
-                            {{ __('Edit profile') }}
+                        <x-dropdown-link :href="route('profile')">
+                                {{ __('My Profile') }}
                         </x-dropdown-link>
 
-                        <!-- Authentication -->
+                        @if (auth()->user()->role === 'admin') 
+                            <x-dropdown-link :href="route('admin')">
+                                    {{ __('Admin') }}
+                            </x-dropdown-link>
+                        @endif
+
+                        @if (auth()->user()->role === 'owner') 
+                            <x-dropdown-link :href="route('owner')">
+                                    {{ __('Owner') }}
+                            </x-dropdown-link>
+                        @endif
+
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
 
@@ -87,6 +91,23 @@
             </div>
 
             <div class="mt-3 space-y-1">
+                <x-responsive-nav-link :href="route('profile')">
+                        {{ __('My Profile') }}
+                </x-responsive-nav-link>
+
+                 
+                @if (auth()->user()->role === 'admin') 
+                    <x-responsive-nav-link :href="route('admin')">
+                            {{ __('Admin') }}
+                    </x-responsive-nav-link>
+                @endif
+
+                @if (auth()->user()->role === 'owner') 
+                    <x-responsive-nav-link :href="route('owner')">
+                            {{ __('Owner') }}
+                    </x-responsive-nav-link>
+                @endif
+                
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
