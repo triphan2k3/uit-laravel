@@ -15,6 +15,7 @@ class UserPolicy
      *
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
+     * @see https://laravel.com/docs/9.x/authorization#creating-policies
      */
     public function viewAny(User $user)
     {
@@ -41,7 +42,7 @@ class UserPolicy
      */
     public function create(User $user)
     {
-        //
+        return $user->role == 'owner';
     }
 
     /**
@@ -53,17 +54,18 @@ class UserPolicy
      */
     public function update(User $user, User $model)
     {
-        //
-        if ($user->id === $model->id)
+        if ($user->id == $model->id) {
             return true;
-
-        else if ($user->role == 'owner')
+        }
+        else if ($user->role == 'owner') {
             return true;
-
-        else if ($user->role == 'admin')
-            if ($model->role == 'owner')
+        }
+        else if ($user->role == 'admin') {
+            if ($model->role != 'user') {
                 return false;
+            }
             else return true;
+        }
         else return false;
     }
 
@@ -76,7 +78,7 @@ class UserPolicy
      */
     public function delete(User $user, User $model)
     {
-        //
+        return $user->role == 'owner';
     }
 
     /**

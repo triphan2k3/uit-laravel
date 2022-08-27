@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('users', function ($table) {
+        Schema::table('users', function (Blueprint $table) {
             $table->after('id', function($table) {
-                $table->string('role')->default('user');
+                $table->enum('role', ['owner', 'admin', 'user'])->default('user');
             });
             $table->after('name', function($table) {
                 $table->date('date_of_birth')->default('1000-01-01');
@@ -30,7 +30,9 @@ return new class extends Migration
      */
     public function down()
     {
-        $table->dropColumn('role');
-        $table->dropColumn('date_of_birth');
+        Schema::table('users', function ($table) {
+            $table->dropColumn('role');
+            $table->dropColumn('date_of_birth');
+        });
     }
 };

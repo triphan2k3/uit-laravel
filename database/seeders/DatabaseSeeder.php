@@ -11,6 +11,7 @@ class DatabaseSeeder extends Seeder
      * Seed the application's database.
      *
      * @return void
+     * @see https://laravel.com/docs/9.x/seeding#main-content
      */
     public function run()
     {
@@ -20,5 +21,8 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+
+        // Run the Users table seed
+        $this->call(UserSeeder::class);
     }
 }

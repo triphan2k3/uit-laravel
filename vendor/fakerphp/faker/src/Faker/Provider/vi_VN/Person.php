@@ -6,16 +6,16 @@ class Person extends \Faker\Provider\Person
 {
     protected static $maleNameFormats = [
         '{{lastName}} {{firstNameMale}}',
-        '{{titleMale}}. {{lastName}} {{firstNameMale}}',
+        // '{{titleMale}}. {{lastName}} {{firstNameMale}}',
         '{{lastName}} {{middleNameMale}} {{firstNameMale}}',
-        '{{titleMale}}. {{lastName}} {{middleNameMale}} {{firstNameMale}}',
+        // '{{titleMale}}. {{lastName}} {{middleNameMale}} {{firstNameMale}}',
     ];
 
     protected static $femaleNameFormats = [
         '{{lastName}} {{firstNameFemale}}',
-        '{{titleFemale}}. {{lastName}} {{firstNameFemale}}',
+        // '{{titleFemale}}. {{lastName}} {{firstNameFemale}}',
         '{{lastName}} {{middleNameFemale}} {{firstNameFemale}}',
-        '{{titleFemale}}. {{lastName}} {{middleNameFemale}} {{firstNameFemale}}',
+        // '{{titleFemale}}. {{lastName}} {{middleNameFemale}} {{firstNameFemale}}',
     ];
 
     protected static $middleNameFormat = [

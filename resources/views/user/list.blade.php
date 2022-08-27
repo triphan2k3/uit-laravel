@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Show users') }}
+            {{ __('Users List') }}
         </h2>
     </x-slot>
 
@@ -37,26 +37,18 @@
                                     <td>{{ $value->date_of_birth }}</td>
                                     <td>{{ $value->email }}</td>
                                     <td>
-                                        @if (Auth::user()->role == 'owner')
                                         <form action="{{route('users.destroy', $value->id)}}" method="POST">
+                                        @can('update', $value)
                                             <!-- Edit button -->
-                                            <a href="{{ route('users.edit', $value->id) }}" style="text-decoration: none"><button type="button" class="btn btn-success">Edit</button></a>
+                                            <a href="{{ route('users.edit', $value) }}" style="text-decoration: none"><button type="button" class="btn btn-success">Edit</button></a>
+                                        @endcan
+                                        @can('delete', $value)
                                             @csrf
                                             @method('DELETE')
                                             <!-- Delete button -->
                                             <button type="submit" class="btn btn-danger">Delete</button>
+                                        @endcan
                                         </form>
-
-                                        @elseif (Auth::user()->role == 'admin' && $value->role != 'owner')
-                                        <form action="{{route('users.destroy', $value->id)}}" method="POST">
-                                            <!-- Edit button -->
-                                            <a href="{{ route('users.edit', $value->id) }}" style="text-decoration: none"><button type="button" class="btn btn-success">Edit</button></a>
-                                            @csrf
-                                            @method('DELETE')
-                                            <!-- Delete button -->
-                                            <button type="submit" class="btn btn-danger">Delete</button>
-                                        </form>
-                                        @endif
                                     </td>
                                 </tr>
                             @endforeach
