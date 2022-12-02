@@ -33,7 +33,7 @@ class UserController extends Controller
         if (Auth::user()->role === 'user') {
             return view('user.list', ['users' => User::where('role', 'user')->get()]);
         }
-        return view('user.list', ['users' => User::all()]);
+        return view('user.list', ['users' => User::paginate(15)]);
     }
 
     /**

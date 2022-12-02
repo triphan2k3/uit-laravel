@@ -14,7 +14,7 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        // Create 10 default users
-        \App\Models\User::factory(10)->create();
+        // Create 200 default users
+        \App\Models\User::factory(200)->create();
     }
 }
