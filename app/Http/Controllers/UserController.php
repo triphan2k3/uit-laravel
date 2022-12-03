@@ -28,6 +28,7 @@ class UserController extends Controller
      * @see https://laravel.com/docs/9.x/queries#update-statements
      * @see https://laravel.com/docs/9.x/requests#retrieving-input
      */
+
     public function index(Request $request)
     {
         // if ($request->search != "") {
@@ -37,6 +38,7 @@ class UserController extends Controller
             return view('user.list', ['users' => User::where('role', 'user')->paginate(20)]);
         }
         return view('user.list', ['users' => User::paginate(20)]);
+
     }
 
     /**
@@ -61,6 +63,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+
         if (Auth::user()->role == 'admin')
             if ($request->role == 'owner')
                 abort(403);
@@ -154,15 +157,14 @@ class UserController extends Controller
                     if ($request->new_password == $request->confirmation) {
                         $user->update(['password' => Hash::make($request->new_password)]);
                     }
+
                     else return redirect()->route('users.index')->with('noti', 'New password does not match');
                 }
 
             }
             else return redirect()->route('users.index')->with('noti', 'Wrong current password');
         }
-
-        
-        
+       
 
         // if (Auth::user()->role == 'owner') {
         //     $user->update([
