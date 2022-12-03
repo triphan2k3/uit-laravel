@@ -5,57 +5,71 @@
         </h2>
     </x-slot>
 
+    <!-- @vite('resources/js/chessboard.js') -->
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200" id="div1">
-                    <div id="board1" style="width: 400px"></div>
-                    <button id="startBtn">Start Position</button>
-                    <button id="clearBtn">Clear Board</button>
-                    <button id="showPositionBtn">Show position in console</button>
-                    <div id="positionStr"  style="word-wrap: break-word">
-                    </div>
+                    <div id="board" style="width: 400px"></div>
+                    <button id="startBtn" style='color:red'>Start Position</button>
+                    <button id="clearBtn" style='color:green' >Clear Board</button>
+                    <button id="showPositionInConsoleBtn" style='color:aqua'>Show position in console</button>
+                    <button id="showPositionBtn" style='color:aqua'>Show position</button>
+                    <div id="positionStr" style="word-wrap: break-word"></div>
                     <script>
-                        var board1 = Chessboard('board1', {
+                        // Init a chessboard
+                        let board = Chessboard('board', {
                             draggable: true,
-                            dropOffBoard: 'trash',
+                            dropOffBoard: 'snapback',
                             position: 'start'
                         })
 
-                        function clickShowPositionBtn () {
-                            console.log('Current position as an Object:')
-                            console.log(board1.position())
+                        let previousPosition = board.position()
+                        function displayPlayerMove() {
+                            let newPosition = board.position()
+                            let currentPiece;
 
-                            // console.log('Current position as a FEN string:')
-                            // console.log(board1.fen())
+                            //find piece that moved
+                            for (let i = 0; i < Object.keys(previousPosition).length; i++) {
+                                const pos = Object.keys(previousPosition)[i]
+                                if (newPosition[pos] == previousPosition[pos])
+                                    continue
+                                else if (newPosition[pos] == undefined && previousPosition[pos] != undefined) {
+                                    currentPiece = previousPosition[pos]
+                                    // console.log(currentPiece)
+                                    break
+                                }
+                            }
 
-                            //sau khi click thi hien thi vi tri
-                            //neu vi tri thay doi -> noi dung trong object thay doi -> noi dung text cua newContent thay doi
-                            //==> sau khi bam vao Show Position button thi noi dung text cua newContent thay doi
+                            //find position
+                            for (let j = 0; j < Object.keys(newPosition).length; j++) {
+                                const pos1 = (Object.keys(newPosition))[j]
+                                if (newPosition[pos1] == currentPiece && previousPosition[pos1] == undefined) {
+                                    console.log(currentPiece + "/" + pos1)
+                                    break
+                                }
+                            }
 
-                            const diff = (after, before) => after.split(before).join('')
-                            const newPosition = JSON.stringify(board1.position());
-
-                            const newMove = diff(newPosition, positionCurrent);
-
-                            const positionAfter = document.getElementById("positionStr");
-                            positionAfter.innerText = newMove;
+                            previousPosition = newPosition
                         }
 
-                        $('#showPositionBtn').on('click', clickShowPositionBtn)
-                        $('#startBtn').on('click', board1.start)
-                        $('#clearBtn').on('click', board1.clear)
 
-                        // selecy element by id
-                        const positionCurrent = document.getElementById("positionStr");
+                        // Button event
+                        $('#startBtn').on('click', board.start)
+                        $('#clearBtn').on('click', board.clear)
+                        $('#showPositionInConsoleBtn').on('click', displayPlayerMoveInConsole)
+                        $('#showPositionBtn').on('click', displayPlayerMove)
+                        // $('body > img').on('drag', displayPlayerMove)
+
+
+                        function displayPlayerMoveInConsole() {
+                            console.log(board.position())
+                            console.log('Current position as a FEN string:')
+                            console.log(board.fen())
+                            console.log(Object.keys(board.position()))
+                        }
                         
-                        //paste content into element
-                        positionCurrent.innerText = JSON.stringify(board1.position());
-                        // positionStrDiv.innerText = "tyui"
-
-
-                    </script> 
-
+                    </script>
                 </div>
             </div>
         </div>
