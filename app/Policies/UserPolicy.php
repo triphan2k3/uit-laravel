@@ -42,7 +42,8 @@ class UserPolicy
      */
     public function create(User $user)
     {
-        return $user->role == 'owner';
+        if ($user->role == 'owner' || $user->role == 'admin')
+            return true;
     }
 
     /**

@@ -28,7 +28,10 @@
                             <div class="col-6">
                                 <label class="form-label">Role</label>
                                 <select class="form-select" name="role">
-                                    <option value="owner" {{$user->role == "owner" ? 'selected' : ''}} >owner</option>
+
+                                    @if (Auth::user()->role == 'owner')
+                                        <option value="owner" {{$user->role == "owner" ? 'selected' : ''}} >owner</option>
+                                    @endif
                                     <option value="admin" {{$user->role == "admin" ? 'selected' : ''}} >admin</option>
                                     <option value="user" {{$user->role == "user" ? 'selected' : ''}} >user</option>
                                 </select>
@@ -48,24 +51,32 @@
                             <h3>Security</h3>
                             
                             <!-- New password -->
-                            <div class="col-6">
-                                <label class="form-label">New password</label>
-                                <input type="password" class="form-control" value="" name="new_password">
-                                <div class="form-text">If you don't want to change password, leave this blank.</div>
-                            </div>
-
+                            @if (Auth::user()->role == 'owner' || Auth::user()->role == 'admin')
+                                <div class="col-6">
+                                    <label class="form-label">New password</label>
+                                    <input type="text" class="form-control" value="" name="new_password">
+                                    <div class="form-text">If you don't want to change password, leave this blank.</div>
+                                </div>
+                            @else
+                                <div class="col-6">
+                                    <label class="form-label">New password</label>
+                                    <input type="password" class="form-control" value="" name="new_password">
+                                    <div class="form-text">If you don't want to change password, leave this blank.</div>
+                                </div>
                             <!-- Confirm new password -->
-                            <div class="col-6">
-                                <label class="form-label">Confirm new password</label>
-                                <input type="password" class="form-control" value="" name="confirmation">
-                            </div>
+                                <div class="col-6">
+                                    <label class="form-label">Confirm new password</label>
+                                    <input type="password" class="form-control" value="" name="confirm_new_password">
+                                </div>  
+                            @endif
 
                             <!-- Old password confirm -->
-                            <div class="col-6">
-                                <label class="form-label">Current password</label>
-                                <input type="password" class="form-control" value="" name="password">
-                            </div>
-
+                            @if (Auth::user()->role == 'user')
+                                <div class="col-6">
+                                    <label class="form-label">Current password</label>
+                                    <input type="password" class="form-control" value="" name="password">
+                                </div>
+                            @endif
                         </div>
                         <button type="submit" class="btn btn-success mt-2">Update</button>    
                     </form>

@@ -11,10 +11,7 @@
                 <div class="p-6 bg-white border-b border-gray-200">
                     You're logged in!
                 </div>
-                <div id="board1" style="width: 400px"></div>
-
             </div>
         </div>
     </div>
-    
 </x-app-layout>

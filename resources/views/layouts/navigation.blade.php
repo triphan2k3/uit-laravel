@@ -22,6 +22,12 @@
                         {{ __('Show users') }}
                     </x-nav-link>
                 </div>
+
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('chessboard')" :active="request()->routeIs('chessboard')">
+                        {{ __('Chessboard') }}
+                    </x-nav-link>
+                </div>
             </div>
 
             <div class="flex">
@@ -49,6 +55,11 @@
                         <!-- Dropdown -->
                         <x-dropdown-link :href="route('users.edit', Auth::user()->id)">
                             {{ __('Edit profile') }}
+                        </x-dropdown-link>
+
+                        <!-- Dropdown -->
+                        <x-dropdown-link :href="route('users.create')">
+                            {{ __('Create new user') }}
                         </x-dropdown-link>
 
                         <!-- Authentication -->
@@ -96,7 +107,6 @@
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-
                     <x-responsive-nav-link :href="route('logout')"
                             onclick="event.preventDefault();
                                         this.closest('form').submit();">

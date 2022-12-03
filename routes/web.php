@@ -22,6 +22,10 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
+Route::get('/chessboard', function () {
+    return view('chessboard');
+})->middleware(['auth'])->name('chessboard');
+
 Route::resource('/users', UserController::class)->name('*', 'users');
 
 require __DIR__.'/auth.php';

@@ -28,12 +28,17 @@ class UserController extends Controller
      * @see https://laravel.com/docs/9.x/queries#update-statements
      * @see https://laravel.com/docs/9.x/requests#retrieving-input
      */
-    public function index()
+
+    public function index(Request $request)
     {
+        // if ($request->search != "") {
+        //     return view('user.list', ['users' => User::search($request->search)->paginate(20)]);
+        // }
         if (Auth::user()->role === 'user') {
-            return view('user.list', ['users' => User::where('role', 'user')->get()]);
+            return view('user.list', ['users' => User::where('role', 'user')->paginate(20)]);
         }
-        return view('user.list', ['users' => User::paginate(15)]);
+        return view('user.list', ['users' => User::paginate(20)]);
+
     }
 
     /**
@@ -58,9 +63,10 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        if ($request->user()->cannot('create')) {
-            abort(403);
-        }
+
+        if (Auth::user()->role == 'admin')
+            if ($request->role == 'owner')
+                abort(403);
         $user = new User;
         $user->name = $request->name;
         $user->email = $request->email;
@@ -68,7 +74,7 @@ class UserController extends Controller
         $user->role = $request->role;
         $user->date_of_birth = $request->date_of_birth;
         $user->save();
-        return redirect()->route('users.index')->with('noti', 'Add successfully');
+        return redirect()->route('users.index')->with('noti', 'Create user successfully');
     }
 
     /**
@@ -113,30 +119,12 @@ class UserController extends Controller
             abort(403);
         }
 
-        // Change oneself's profile - password required
-        if (Auth::user()->Id == $user->Id) {
-            if ($request->filled('password') && Hash::check($request->password, $user->password)) {
-                $user->update([
-                    'role' => $request->role,
-                    'name' => $request->name,
-                    'email' => $request->email,
-                    'date_of_birth' => $request->date_of_birth,
-                ]);
-
-                // Change password
-                if ($request->filled('new_password')) {
-                    if ($request->new_password == $request->confirmation) {
-                        $user->update(['password' => Hash::make($request->new_password)]);
-                    }
-                    else return redirect()->route('users.index')->with('noti', 'New password do not match');
-                }
-
-            }
-            else return redirect()->route('users.index')->with('noti', 'Wrong current password');
-        }
-
         // Owners can change other owners', admins' and users' profiles - no password required
         // Admins can change users' profiles - no password required
+        if (Auth::user()->role == 'admin') {
+            if ($request->role == 'owner')
+                abort(403);
+        }
         else if (Auth::user()->role == 'owner' || Auth::user()->role == 'admin') {
             $user->update([
                 'role' => $request->role,
@@ -150,9 +138,33 @@ class UserController extends Controller
                 if ($request->new_password == $request->confirmation) {
                     $user->update(['password' => Hash::make($request->new_password)]);
                 }
-                else return redirect()->route('users.index')->with('noti', 'New password do not match');
+                else return redirect()->route('users.index')->with('noti', 'New password does not match');
             }
         }
+
+        // Change oneself's profile - password required
+        else if (Auth::user()->Id == $user->Id) {
+            if ($request->filled('password') && Hash::check($request->password, $user->password)) {
+                $user->update([
+                    'role' => $request->role,
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'date_of_birth' => $request->date_of_birth,
+                ]);
+
+                // Change password
+                if ($request->filled('new_password')) {
+                    if ($request->new_password == $request->confirmation) {
+                        $user->update(['password' => Hash::make($request->new_password)]);
+                    }
+
+                    else return redirect()->route('users.index')->with('noti', 'New password does not match');
+                }
+
+            }
+            else return redirect()->route('users.index')->with('noti', 'Wrong current password');
+        }
+       
 
         // if (Auth::user()->role == 'owner') {
         //     $user->update([
