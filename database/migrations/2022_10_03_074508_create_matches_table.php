@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('matches', function (Blueprint $table) {
             $table->id();
-            $table->string('PGN')->de;
+            $table->string('PGN');
             $table->foreignId('player1_id')->constrained('users');
             $table->foreignId('player2_id')->constrained('users');
             $table->timestamps();
