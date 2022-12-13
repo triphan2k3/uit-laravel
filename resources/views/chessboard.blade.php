@@ -19,6 +19,11 @@
                     <button class="btn btn-success mt-2" id="startBtn">Start Position</button>
                     <button class="btn btn-danger mt-2" id="clearBtn">Clear Board</button>
                     <button class="btn btn-primary mt-2" id="showPositionBtn">Show position in console</button>
+                    <button class="btn btn-primary mt-2" id="showJoinBtn" >
+                        <a href="/join" style="text-decoration: none; color: white;">
+                            {{ __('Join match') }}
+                        </a>
+                    </button>
                     <script>
                         const chessPieces = {
                             bB: "♝",

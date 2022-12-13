@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\JoinMatchController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,5 +28,7 @@ Route::get('/chessboard', function () {
 })->middleware(['auth'])->name('chessboard');
 
 Route::resource('/users', UserController::class)->name('*', 'users');
+
+Route::get('/join', JoinMatchController::class)->name('join');
 
 require __DIR__.'/auth.php';
