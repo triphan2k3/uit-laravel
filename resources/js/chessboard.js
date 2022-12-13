@@ -1,51 +1,49 @@
-// Init a chessboard
-let board = Chessboard('board', {
-    draggable: true,
-    dropOffBoard: 'snapback',
-    position: 'start'
-})
-
-let previousPosition = board.position()
-function displayPlayerMove() {
-    let newPosition = board.position()
-    let currentPiece;
-
-    //find piece that moved
-    for (let i = 0; i < Object.keys(previousPosition).length; i++) {
-        const pos = Object.keys(previousPosition)[i]
-        if (newPosition[pos] == previousPosition[pos])
-            continue
-        else if (newPosition[pos] == undefined && previousPosition[pos] != undefined) {
-            currentPiece = previousPosition[pos]
-            // console.log(currentPiece)
-            break
-        }
-    }
-
-    //find position
-    for (let j = 0; j < Object.keys(newPosition).length; j++) {
-        const pos1 = (Object.keys(newPosition))[j]
-        if (newPosition[pos1] == currentPiece && previousPosition[pos1] == undefined) {
-            console.log(currentPiece + "/" + pos1)
-            break
-        }
-    }
-
-    previousPosition = newPosition
+const chessPieces = {
+    bB: "♝",
+    bK: "♚",
+    bN: "♞",
+    bP: "♟",
+    bQ: "♛",
+    bR: "♜",
+    wB: "♗",
+    wK: "♔",
+    wN: "♘",
+    wP: "♙",
+    wQ: "♕",
+    wR: "♖", 
 }
 
+// Init a chessboard
+var config = {
+    draggable: true,
+    dropOffBoard: 'snapback',
+    position: 'start',
+    onDrop: onDrop,
+}
+
+var board = Chessboard('board', config)
 
 // Button event
 $('#startBtn').on('click', board.start)
 $('#clearBtn').on('click', board.clear)
-$('#showPositionInConsoleBtn').on('click', displayPlayerMoveInConsole)
-$('#showPositionBtn').on('click', displayPlayerMove)
-// $('body > img').on('drag', displayPlayerMove)
+$('#showPositionBtn').on('click', clickShowPositionBtn)
 
-
-function displayPlayerMoveInConsole() {
+function clickShowPositionBtn () {
+    console.log('Current position as an Object:')
     console.log(board.position())
+
     console.log('Current position as a FEN string:')
     console.log(board.fen())
-    console.log(Object.keys(board.position()))
+}
+
+function onDrop (source, target, piece, newPos, oldPos, orientation) {                           
+    if (source === target || target === 'offboard') {
+        return
+    } else {
+        let data = chessPieces[piece] + " " + target
+        let ul = document.getElementById('moveList')
+        let li = document.createElement('li')
+        li.appendChild(document.createTextNode(data))
+        ul.appendChild(li)  
+    }
 }
