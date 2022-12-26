@@ -1,4 +1,7 @@
 UIT-LARAVEL useful things
 
-realtime using laravel websocket 
-https://beyondco.de/docs/laravel-websockets/getting-started/installation
+1. composer i
+2. npm i
+3. npm run dev/build
+4. php artisan key:generate
+5. php artisan migrate
