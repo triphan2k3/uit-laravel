@@ -14,10 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::create('matches', function (Blueprint $table) {
-            $table->id();
-            $table->string('PGN');
+            $table->id()->unique();
+            $table->string('PGN')->nullable();
             $table->foreignId('player1_id')->constrained('users');
-            $table->foreignId('player2_id')->constrained('users');
+            $table->foreignId('player2_id')->constrained('users')->default(NULL);
             $table->timestamps();
         });
     }

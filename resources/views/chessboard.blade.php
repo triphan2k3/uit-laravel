@@ -5,54 +5,70 @@
         </h2>
     </x-slot>
 
+    <!-- @vite('resources/js/chessboard.js') -->
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200" id="div1">
-                    <div id="board1" style="width: 400px"></div>
-                    <button id="startBtn">Start position</button>
-                    <button id="clearBtn">Clear board</button>
-                    <button id="showPositionBtn">Show position</button>
-                    <div id="positionStr" style="word-wrap: break-word">
+                    <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-around; height: 450px">
+                        <div id="board" style="width: 400px"></div>
+                        <div style="height: 100%; overflow-y: scroll; width: 200px">
+                            <ul id="moveList"></ul>
+                        </div>
                     </div>
+                    <button class="btn btn-success mt-2" id="startBtn">Start Position</button>
+                    <button class="btn btn-danger mt-2" id="clearBtn">Clear Board</button>
+                    <button class="btn btn-primary mt-2" id="showPositionBtn">Show position in console</button>
+                    <button class="btn btn-primary mt-2" id="showJoinBtn" >
+                        <a href="/join" style="text-decoration: none; color: white;">
+                            {{ __('Join match') }}
+                        </a>
+                    </button>
                     <script>
-                        var board1 = Chessboard('board1', {
+                        const chessPieces = {
+                            bB: "♝",
+                            bK: "♚",
+                            bN: "♞",
+                            bP: "♟",
+                            bQ: "♛",
+                            bR: "♜",
+                            wB: "♗",
+                            wK: "♔",
+                            wN: "♘",
+                            wP: "♙",
+                            wQ: "♕",
+                            wR: "♖", 
+                        }
+                        // Init a chessboard
+                        var config = {
                             draggable: true,
-                            dropOffBoard: 'trash',
-                            position: 'start'
-                        })
-
+                            dropOffBoard: 'snapback',
+                            position: 'start',
+                            onDrop: onDrop,
+                        }
+                        var board = Chessboard('board', config)
+                        // Button event
+                        $('#startBtn').on('click', board.start)
+                        $('#clearBtn').on('click', board.clear)
+                        $('#showPositionBtn').on('click', clickShowPositionBtn)
                         function clickShowPositionBtn () {
                             console.log('Current position as an Object:')
-                            console.log(board1.position())
-
-                            // console.log('Current position as a FEN string:')
-                            // console.log(board1.fen())
-
-                            //sau khi click thi hien thi vi tri
-                            //neu vi tri thay doi -> noi dung trong object thay doi -> noi dung text cua newContent thay doi
-                            //==> sau khi bam vao Show Position button thi noi dung text cua newContent thay doi
-
-                            const diff = (after, before) => after.split(before).join('')
-                            const newPosition = JSON.stringify(board1.position());
-
-                            const newMove = diff(newPosition, positionCurrent);
-
-                            const positionAfter = document.getElementById("positionStr");
-                            positionAfter.innerText = newMove;
+                            console.log(board.position())
+                            console.log('Current position as a FEN string:')
+                            console.log(board.fen())
                         }
-
-                        $('#showPositionBtn').on('click', clickShowPositionBtn)
-                        $('#startBtn').on('click', board1.start)
-                        $('#clearBtn').on('click', board1.clear)
-
-                        // selecy element by id
-                        const positionCurrent = document.getElementById("positionStr");
-                        
-                        //paste content into element
-                        positionCurrent.innerText = JSON.stringify(board1.position());
+                        function onDrop (source, target, piece, newPos, oldPos, orientation) {                           
+                            if (source === target || target === 'offboard') {
+                                return
+                            } else {
+                                let data = chessPieces[piece] + " " + target
+                                let ul = document.getElementById('moveList')
+                                let li = document.createElement('li')
+                                li.appendChild(document.createTextNode(data))
+                                ul.appendChild(li)  
+                            }
+                        }
                     </script>
-
                 </div>
             </div>
         </div>

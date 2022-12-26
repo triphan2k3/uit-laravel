@@ -62,7 +62,7 @@
                         <x-dropdown-link :href="route('users.edit', Auth::user()->id)">
                             {{ __('Edit profile') }}
                         </x-dropdown-link>
-        
+
                         <!-- Dropdown -->
                         <x-dropdown-link :href="route('users.create')">
                             {{ __('Create new user') }}

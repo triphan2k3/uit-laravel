@@ -28,6 +28,7 @@
                             <div class="col-6">
                                 <label class="form-label">Role</label>
                                 <select class="form-select" name="role">
+
                                     @if (Auth::user()->role == 'owner')
                                         <option value="owner" {{$user->role == "owner" ? 'selected' : ''}} >owner</option>
                                     @endif
@@ -76,7 +77,6 @@
                                     <input type="password" class="form-control" value="" name="password">
                                 </div>
                             @endif
-
                         </div>
                         <button type="submit" class="btn btn-success mt-2">Update</button>    
                     </form>
