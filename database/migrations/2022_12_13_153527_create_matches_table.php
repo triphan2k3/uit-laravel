@@ -13,12 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('views', function (Blueprint $table) {
-            $table->foreignId('match_id')->constrained();
-            $table->foreignId('inviter_id')->constrained('users');
-            $table->foreignId('invited_id')->constrained('users');
+        Schema::create('matches', function (Blueprint $table) {
+            $table->id();
+            $table->string('PGN');
+            $table->foreignId('player1_id')->constrained('users');
+            $table->foreignId('player2_id')->constrained('users');
             $table->timestamps();
-            $table->primary(['match_id', 'inviter_id', 'invited_id']);
         });
     }
 
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('views');
+        Schema::dropIfExists('matches');
     }
 };

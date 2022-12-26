@@ -10,10 +10,10 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200" id="div1">
                     <div id="board1" style="width: 400px"></div>
-                    <button id="startBtn">Start Position</button>
-                    <button id="clearBtn">Clear Board</button>
-                    <button id="showPositionBtn">Show position in console</button>
-                    <div id="positionStr"  style="word-wrap: break-word">
+                    <button id="startBtn">Start position</button>
+                    <button id="clearBtn">Clear board</button>
+                    <button id="showPositionBtn">Show position</button>
+                    <div id="positionStr" style="word-wrap: break-word">
                     </div>
                     <script>
                         var board1 = Chessboard('board1', {
@@ -51,10 +51,7 @@
                         
                         //paste content into element
                         positionCurrent.innerText = JSON.stringify(board1.position());
-                        // positionStrDiv.innerText = "tyui"
-
-
-                    </script> 
+                    </script>
 
                 </div>
             </div>

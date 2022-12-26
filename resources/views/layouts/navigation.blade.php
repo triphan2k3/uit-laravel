@@ -24,6 +24,12 @@
                 </div>
 
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('play')" :active="request()->routeIs('play')">
+                        {{ __('Play') }}
+                    </x-nav-link>
+                </div>
+
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('chessboard')" :active="request()->routeIs('chessboard')">
                         {{ __('Chessboard') }}
                     </x-nav-link>

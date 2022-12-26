@@ -26,6 +26,12 @@ Route::get('/chessboard', function () {
     return view('chessboard');
 })->middleware(['auth'])->name('chessboard');
 
+Route::get('/play', function () {
+    return view('play');
+})->middleware(['auth'])->name('play');
+
+Route::get('/join');
+
 Route::resource('/users', UserController::class)->name('*', 'users');
 
 require __DIR__.'/auth.php';
